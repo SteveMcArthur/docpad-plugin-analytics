@@ -1,0 +1,7 @@
+# Analytics Plugin for [DocPad](http://docpad.org)
+
+[![Build Status](https://img.shields.io/travis/SteveMcArthur/docpad-plugin-analytics/master.svg)](https://travis-ci.org/SteveMcArthur/docpad-plugin-analytics "Check this project's build status on TravisCI")
+[![NPM version](https://img.shields.io/npm/v/docpad-plugin-analytics.svg)](https://www.npmjs.com/package/docpad-plugin-analytics "View this project on NPM")
+[![NPM downloads](https://img.shields.io/npm/dm/docpad-plugin-analytics.svg)](https://www.npmjs.com/package/docpad-plugin-analytics "View this project on NPM")
+
+Retrieves [Google Analytics](https://www.google.com/analytics/) data using serverside authentication using the [embed api](https://ga-dev-tools.appspot.com/embed-api/server-side-authorization/). The advantage of this is that you don't need to give users access to your analytics api and the users don't need to log in to google to access the data. This makes a lot more sense for an admin style page on a website that shows analytic data. Of course, you will probably want to protect this admin page with some sort of login for the website. So you will probably want to use this plugin in conjunction with an authentication plugin such as [docpad-plugin-authentication](https://www.npmjs.com/package/docpad-plugin-authentication).
