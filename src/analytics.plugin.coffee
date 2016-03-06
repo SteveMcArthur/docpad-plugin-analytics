@@ -16,6 +16,8 @@ module.exports = (BasePlugin) ->
             #default place is the root of the docpad application.
             credentialsFile: path.resolve(process.cwd(),'credentials.json')
             
+            credentials: null
+            
             #example of a google analytics api query. You will probably want
             #to use googles query explorer (https://ga-dev-tools.appspot.com/query-explorer/)
             #to build your own query.
@@ -51,8 +53,10 @@ module.exports = (BasePlugin) ->
         
         constructor: ->
             super
-
-            creds = require(@config.credentialsFile)
+            
+            creds =  @config.credentials
+            if !creds
+                creds = require(@config.credentialsFile)
             @jwtClient = new google.auth.JWT(creds.client_email, null, creds.private_key, ['https://www.googleapis.com/auth/analytics.readonly'], null)
          
         

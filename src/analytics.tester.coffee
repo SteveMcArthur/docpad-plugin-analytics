@@ -27,41 +27,26 @@ module.exports = (testers) ->
                 outExpectedPath = tester.config.outExpectedPath
                 plugin = tester.docpad.getPlugin('analytics')
                 
-                test 'plugin config should have credentials property', (done) ->
+                test 'plugin config should have queries property', (done) ->
                     config = plugin.getConfig()
-                    expect(config).to.have.property('credentials')
+                    expect(config).to.have.property('queries')
                     done()
                     
-                test 'plugin config should have credentials.client_id property', (done) ->
-                    credentials = plugin.getConfig().credentials
-                    expect(credentials).to.have.property('client_id')
+                test 'plugin config should have credentialsFile property', (done) ->
+                    config = plugin.getConfig()
+                    expect(config).to.have.property('credentialsFile')
                     done()
                     
                 test 'plugin should have jwtClient property', (done) ->
                     expect(plugin).to.have.property('jwtClient')
                     done()
                     
-
-                test 'server should return json object when calling last30days', (done) ->
-                    fileUrl = "#{baseUrl}/last30days"
+                ###
+                test 'server should return json object when calling uniquePageviews', (done) ->
+                    fileUrl = "#{baseUrl}/uniquePageviews"
                     request fileUrl, (err,response,actual) ->
                         return done(err)  if err
                         obj = JSON.parse(response)
                         expect(obj).to.have.property('rows')
                         done()
-                        
-                test 'server should return json object when calling last7days', (done) ->
-                    fileUrl = "#{baseUrl}/last7days"
-                    request fileUrl, (err,response,actual) ->
-                        return done(err)  if err
-                        obj = JSON.parse(response)
-                        expect(obj).to.have.property('rows')
-                        done()
-                        
-                test 'server should return json object when calling yesterdayh', (done) ->
-                    fileUrl = "#{baseUrl}/yesterday"
-                    request fileUrl, (err,response,actual) ->
-                        return done(err)  if err
-                        obj = JSON.parse(response)
-                        expect(obj).to.have.property('rows')
-                        done()
+                ###

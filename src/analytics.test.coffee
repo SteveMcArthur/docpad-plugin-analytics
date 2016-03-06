@@ -4,9 +4,9 @@ testerConfig =
     pluginPath: __dirname+'/..'
     autoExit: 'safe'
 docpadConfig =
-    templateData:
-        site:
-            url: 'http://127.0.0.1'
+    plugins:
+        analytics:
+            credentials: {}
 
 require('docpad').require('testers')
     .test(testerConfig,docpadConfig)
