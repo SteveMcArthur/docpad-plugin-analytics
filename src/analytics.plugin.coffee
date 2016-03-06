@@ -16,6 +16,7 @@ module.exports = (BasePlugin) ->
             #default place is the root of the docpad application.
             credentialsFile: path.resolve(process.cwd(),'credentials.json')
             
+            #possibility to add credentials directly to the config
             credentials: null
             
             #example of a google analytics api query. You will probably want
@@ -59,8 +60,7 @@ module.exports = (BasePlugin) ->
                 creds = require(@config.credentialsFile)
             @jwtClient = new google.auth.JWT(creds.client_email, null, creds.private_key, ['https://www.googleapis.com/auth/analytics.readonly'], null)
          
-        
-        
+               
         # Use to extend the server with routes that will be triggered before the DocPad routes.
         serverExtend: (opts) ->
             # Extract the server from the options
@@ -92,5 +92,3 @@ module.exports = (BasePlugin) ->
                     serverGet(req,res,next)
 
             @
-        
-
