@@ -31,9 +31,9 @@ Retrieves [Google Analytics](https://www.google.com/analytics/) data using serve
         "profileId": "87654321",
         "accountId": "12345678",
         "webPropertyId": "UA-12345678-1",
-        "internalWebPropertyId": "99195169",
+        "internalWebPropertyId": "991234567",
         "profileName": "All Web Site Data",
-        "tableId": "ga:103182217"
+        "tableId": "ga:1010101010"
     },
     "containsSampledData": false,
     "columnHeaders": [
