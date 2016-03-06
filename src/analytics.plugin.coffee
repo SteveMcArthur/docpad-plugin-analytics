@@ -9,46 +9,31 @@ module.exports = (BasePlugin) ->
         # Config
         config:
             dataURL: '/analytics/data'
-            gaID: ''
+
+            #download your credentials file from
+            #your google analytics account and place
+            #it somewhere in your docpad project. The
+            #default place is the root of the docpad application.
             credentialsFile: path.resolve(process.cwd(),'credentials.json')
-
-        assign: (target, source) ->
-            for key, val of source
-                if (!target[key])
-                    target[key] = val
-            return target
-
-        pageViewsQuery:
-            'auth': @jwtClient,
-            'ids': '',
-            'metrics': 'ga:uniquePageviews',
-            'dimensions': 'ga:pagePath',
-            'start-date': '30daysAgo',
-            'end-date': 'yesterday',
-            'sort': '-ga:uniquePageviews',
-            'max-results': 10
             
-        getQueries: (baseQuery, id, resultCount) ->
-            maxResults = resultCount || 10
-
-            result =
-                last30days: @assign({
-                    'ids': id,
-                    'max-results': maxResults,
-                    'start-date': '30daysAgo'
-                }, baseQuery),
-                last7days: @assign({
-                    'ids': id,
-                    'max-results': maxResults,
-                    'start-date': '7daysAgo'
-                }, baseQuery),
-                yesterday: @assign({
-                    'ids': id,
-                    'max-results': maxResults,
-                    'start-date': 'yesterday'
-                }, baseQuery)
-
-            return result
+            #example of a google analytics api query. You will probably want
+            #to use googles query explorer (https://ga-dev-tools.appspot.com/query-explorer/)
+            #to build your own query.
+            queries:[{
+                #appended to the dataURL config option
+                #to create the URL used to call the query
+                'endPoint': 'uniquePageviews',
+                #this is the actual query sent to google
+                'query':{
+                    'ids':'',
+                    'metrics': 'ga:uniquePageviews',
+                    'dimensions': 'ga:pageTitle',
+                    'start-date': '30daysAgo',
+                    'end-date': 'yesterday',
+                    'sort': '-ga:uniquePageviews',
+                    'max-results': 10
+                }
+            }]
         
         retrieveData: (query,callback) ->
             authClient = @jwtClient
@@ -66,38 +51,41 @@ module.exports = (BasePlugin) ->
         
         constructor: ->
             super
-            #creds = @config.credentials
-            #credentialFile = path.resolve(@docpad.getconfig().rootPath,'credentials.json')
+
             creds = require(@config.credentialsFile)
             @jwtClient = new google.auth.JWT(creds.client_email, null, creds.private_key, ['https://www.googleapis.com/auth/analytics.readonly'], null)
          
+        
+        
         # Use to extend the server with routes that will be triggered before the DocPad routes.
         serverExtend: (opts) ->
             # Extract the server from the options
             {server} = opts
             config = @getConfig()
             plugin = @
-            analytics = google.analytics('v3')
-            qrys = @getQueries(@pageViewsQuery, config.gaID)
-
-            server.get config.dataURL+"/last30days", (req,res,next) ->
-                try
-                    plugin.retrieveData qrys.last30days, (data) ->
-                        res.setHeader('Content-Type', 'application/json')
-                        res.send(200, JSON.stringify(data))
-                catch err
-                    res.send(500,err)
             
-            server.get config.dataURL+"/last7days", (req,res,next) ->
-                plugin.queryData analytics, qrys.last7days, (data) ->
-                    res.setHeader('Content-Type', 'application/json')
-                    res.send(200, data)
-                
-            server.get config.dataURL+"/yesterday", (req,res,next) ->
-                plugin.queryData analytics, qrys.yesterday, (data) ->
-                    res.setHeader('Content-Type', 'application/json')
-                    res.send(200, data)
+            serverGet = (req,res,next) ->
+                endPoint = req.path.split('/').pop()
+                theQry = null
 
+                for q in config.queries
+                    if q.endPoint == endPoint
+                        theQry = q.query
+                        
+                if theQry
+                    try
+                        plugin.retrieveData theQry, (data) ->
+                            res.setHeader('Content-Type', 'application/json')
+                            res.send(200, JSON.stringify(data))
+                    catch err
+                        res.send(500,err)
+                else
+                    res.send(500,"Unable to find matching query")
+            
+            qrys = config.queries
+            qrys.forEach (qry) ->
+                server.get config.dataURL+'/'+qry.endPoint, (req,res,next) ->
+                    serverGet(req,res,next)
 
             @
         
