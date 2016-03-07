@@ -1,4 +1,4 @@
-# Analytics Data Retrieval Plugin for [DocPad](http://docpad.org)
+# Google Analytics Data Plugin for [DocPad](http://docpad.org)
 
 [![Build Status](https://img.shields.io/travis/SteveMcArthur/docpad-plugin-analytics/master.svg)](https://travis-ci.org/SteveMcArthur/docpad-plugin-analytics "Check this project's build status on TravisCI")
 [![NPM version](https://img.shields.io/npm/v/docpad-plugin-analytics.svg)](https://www.npmjs.com/package/docpad-plugin-analytics "View this project on NPM")
