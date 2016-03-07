@@ -75,6 +75,7 @@
     
     ul#menu li a {
         background-color: rgba(85, 193, 231, 1);
+        border: 1px solid #000;
         color: white;
         padding: 10px 20px;
         text-decoration: none;
@@ -87,6 +88,9 @@
     }
     ul#menu li a.active {
         background-color: orange;
+        padding-top: 13px;
+        padding-bottom: 11px;
+        border-bottom: none;
     }
     
     .hidden {

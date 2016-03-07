@@ -69,9 +69,9 @@ Retrieves [Google Analytics](https://www.google.com/analytics/) data using serve
 
 The advantage of this approach that you don't need to give users access to your analytics account and the users don't need to log in to google to access the data. This makes a lot more sense for an admin style page that shows analytic data. Of course, you will probably want to protect this admin page with some sort of login for the website. So you will probably want to use this plugin in conjunction with an authentication plugin such as [docpad-plugin-authentication](https://www.npmjs.com/package/docpad-plugin-authentication).
 
-The plugin relies on downloading from Google what they call a "JSON key". This is a json file containing all the necessary credentials for making calls to the embeded API. All details can be found at: [https://ga-dev-tools.appspot.com/embed-api/server-side-authorization/](https://ga-dev-tools.appspot.com/embed-api/server-side-authorization/) 
+The plugin relies on downloading from Google what they call a "JSON key". This is a json file containing all the necessary credentials for making calls to the embed API. All details can be found at: [https://ga-dev-tools.appspot.com/embed-api/server-side-authorization/](https://ga-dev-tools.appspot.com/embed-api/server-side-authorization/) 
 
-Once you have the "JSON key" you need to place it in the root of your DocPad application. The plugin will load it from there.
+Once you have the "JSON key" you need to place it in the root of your DocPad application. The plugin will load it from there. By default the plugin expects it to be named "credentials.json". 
 
 In docpad.coffee file you will need to configure the queries you want to send to google and the URL endpoints for calling those queries from within your application.
 

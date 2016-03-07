@@ -105,7 +105,7 @@ docpadConfig =
             queries:[{
                 'endPoint': 'uniquePageviews',
                 'query':{
-                    'ids':'ga:97561085',
+                    'ids':'ga:97561085',#replace this with your own ID
                     'metrics': 'ga:uniquePageviews',
                     'dimensions': 'ga:pageTitle',
                     'start-date': '30daysAgo',
