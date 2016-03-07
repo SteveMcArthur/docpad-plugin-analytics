@@ -63,7 +63,7 @@ module.exports = (BasePlugin) ->
             @jwtClient = new google.auth.JWT(creds.client_email, null, creds.private_key, ['https://www.googleapis.com/auth/analytics.readonly'], null)
             
         # Use to extend the server with routes that will be triggered before the DocPad routes.
-        serverExtend: (opts) ->
+        serverAfter: (opts) ->
             # Extract the server from the options
             {server} = opts
             config = @getConfig()
