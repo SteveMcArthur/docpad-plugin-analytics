@@ -8,6 +8,7 @@ components/
 bower_components/
 node_modules/
 out/
+testApp/
 
 
 #ignore thumbnails created by windows

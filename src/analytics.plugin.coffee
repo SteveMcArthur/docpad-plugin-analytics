@@ -49,24 +49,26 @@ module.exports = (BasePlugin) ->
                 analytics.data.ga.get query, (err, data) ->
                     if (err)
                         callback(err)
-
-                    callback(data)
+                    else
+                        callback(null,data)
         
         constructor: ->
             super
             
+         
+        init: ->
             creds =  @config.credentials
             if !creds
                 creds = require(@config.credentialsFile)
             @jwtClient = new google.auth.JWT(creds.client_email, null, creds.private_key, ['https://www.googleapis.com/auth/analytics.readonly'], null)
-         
-               
+            
         # Use to extend the server with routes that will be triggered before the DocPad routes.
         serverExtend: (opts) ->
             # Extract the server from the options
             {server} = opts
             config = @getConfig()
             plugin = @
+            plugin.init()
             
             serverGet = (req,res,next) ->
                 endPoint = req.path.split('/').pop()
@@ -78,9 +80,16 @@ module.exports = (BasePlugin) ->
                         
                 if theQry
                     try
-                        plugin.retrieveData theQry, (data) ->
-                            res.setHeader('Content-Type', 'application/json')
-                            res.send(200, JSON.stringify(data))
+                        plugin.retrieveData theQry, (err,data) ->
+                            if err
+                                obj =
+                                    msg:'error retrieving data',
+                                    err: err
+                                str = JSON.stringify(obj)
+                                res.send(500,str)
+                            else
+                                res.setHeader('Content-Type', 'application/json')
+                                res.send(200, JSON.stringify(data))
                     catch err
                         res.send(500,err)
                 else
