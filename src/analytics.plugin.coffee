@@ -137,8 +137,7 @@ module.exports = (BasePlugin) ->
             
             server.get config.dataURL, (req,res,next) ->
                 endPoint = req.params.endPoint
-                console.log("analytics...")
-                console.log(endPoint)
+
                 theQry = null
                 for q in queries
                     if q.endPoint instanceof Array
