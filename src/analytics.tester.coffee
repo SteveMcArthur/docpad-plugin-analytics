@@ -9,7 +9,7 @@ module.exports = (testers) ->
     # Define My Tester
     class AnalyticsTester extends testers.ServerTester
         # Test Generate
-        testGenerate: testers.RendererTester::testGenerate
+        #testGenerate: testers.RendererTester::testGenerate
 
         # Custom test for the server
         testServer: (next) ->
@@ -20,33 +20,78 @@ module.exports = (testers) ->
             super
 
             # Test
-            @suite 'analytics', (suite,test) ->
+            @suite 'plugin properties', (suite,test) ->
                 # Prepare
-                baseUrl = "http://localhost:9778/analytics/data"
-                
-                outExpectedPath = tester.config.outExpectedPath
+
                 plugin = tester.docpad.getPlugin('analytics')
+                config = plugin.getConfig()
+                expectedEndpoints = [
+                        "7daysPageviews"
+                        "yesterdayPageviews"
+                        "60daySessions"
+                        "30dayCountry"
+                        "7daysCountry"
+                        "yesterdayCountry"
+                        "browserAndOS"
+                        "timeOnSite"
+                        "trafficSources"
+                        "keywords"
+                    ]
                 
-                test 'plugin config should have queries property', (done) ->
-                    config = plugin.getConfig()
-                    expect(config).to.have.property('queries')
+                @suite 'config properties exist', (suite,test,done) ->
+                    expectedConfig = [
+                        "dataURL"
+                        "credentialsFile"
+                        "minimiseData"
+                        "cacheExpires"
+                        "queries"
+                    ]
+
+                    expectedConfig.forEach (item) ->
+                        test item+' property', () ->
+                            expect(config).to.have.property(item)
+                    
+                    done()
+                                            
+                @suite 'plugin methods are functions', (suite,test,done) ->
+                    expectedMethods = [
+                        "formatData"
+                        "retrieveData"
+                        "init"
+                        "serverExtend"
+                    ]
+
+                    expectedMethods.forEach (item) ->
+                        test item+' method', () ->
+                            console.log(item)
+                            expect(plugin[item]).to.be.instanceof(Function)
+                    
                     done()
                     
-                test 'plugin config should have credentialsFile property', (done) ->
-                    config = plugin.getConfig()
-                    expect(config).to.have.property('credentialsFile')
+                @suite 'default queries exist', (suite,test,done) ->
+                    
+                    endpoints = []
+                    for q in plugin.defaultQueries
+                        if q.endPoint
+                            endpoints.push(q.endPoint)
+
+                    expectedEndpoints.forEach (item) ->
+                        test item+' endpoint', () ->
+                            i = endpoints.indexOf(item)
+                            expect(i).to.be.above(-1)
+                    
                     done()
                     
-                test 'plugin should have jwtClient property', (done) ->
-                    expect(plugin).to.have.property('jwtClient')
-                    done()
+                @suite 'default queries copied to queries', (suite,test,done) ->
                     
-                ###
-                test 'server should return json object when calling uniquePageviews', (done) ->
-                    fileUrl = "#{baseUrl}/uniquePageviews"
-                    request fileUrl, (err,response,actual) ->
-                        return done(err)  if err
-                        obj = JSON.parse(response)
-                        expect(obj).to.have.property('rows')
-                        done()
-                ###
+                    endpoints = []
+                    for q in config.queries
+                        if q.endPoint
+                            endpoints.push(q.endPoint)
+
+                    expectedEndpoints.forEach (item) ->
+                        test item+' endpoint', () ->
+                            i = endpoints.indexOf(item)
+                            expect(i).to.be.above(-1)
+                    
+                    done()

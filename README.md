@@ -4,38 +4,11 @@
 [![NPM version](https://img.shields.io/npm/v/docpad-plugin-analytics.svg)](https://www.npmjs.com/package/docpad-plugin-analytics "View this project on NPM")
 [![NPM downloads](https://img.shields.io/npm/dm/docpad-plugin-analytics.svg)](https://www.npmjs.com/package/docpad-plugin-analytics "View this project on NPM")
 
-Retrieves [Google Analytics](https://www.google.com/analytics/) data using serverside authentication via the [embed api](https://ga-dev-tools.appspot.com/embed-api/server-side-authorization/). Google returns analytic data in the form of a JSON object which can be used to produce tables, charts and reports. The plugin does not create these reports - just retrieves the data (which is really the hard part). Once you have the data it is simple enough to use something like [Chart.js](http://www.chartjs.org/) to create nice visual charts. The charts example shows how to do this. The data returned from google is in the following format:
+Retrieves [Google Analytics](https://www.google.com/analytics/) data using serverside authentication via the [embed api](https://ga-dev-tools.appspot.com/embed-api/server-side-authorization/). Google returns analytic data in the form of a JSON object which can be used to produce tables, charts and reports. The plugin does not create these reports - just retrieves the data (which is really the hard part). Once you have the data it is simple enough to use something like [Chart.js](http://www.chartjs.org/) to create nice visual charts. The charts example shows how to do this. The data returned from the plugin is an abbreviated version of that returned from google. 
 ````json
 {
-    "kind": "analytics#gaData",
-    "id": "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:...",
-    "query": {
-        "start-date": "30daysAgo",
-        "end-date": "yesterday",
-        "ids": "ga:12345678",
-        "dimensions": "ga:pagePath",
-        "metrics": [
-            "ga:uniquePageviews"
-        ],
-        "sort": [
-            "-ga:uniquePageviews"
-        ],
-        "start-index": 1,
-        "max-results": 10
-    },
-    "itemsPerPage": 10,
+
     "totalResults": 20,
-    "selfLink": "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:...",
-    "nextLink": "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:...",
-    "profileInfo": {
-        "profileId": "87654321",
-        "accountId": "12345678",
-        "webPropertyId": "UA-12345678-1",
-        "internalWebPropertyId": "991234567",
-        "profileName": "All Web Site Data",
-        "tableId": "ga:1010101010"
-    },
-    "containsSampledData": false,
     "columnHeaders": [
         {
             "name": "ga:pagePath",
@@ -71,33 +44,34 @@ The advantage of this approach that you don't need to give users access to your 
 
 The plugin relies on downloading from Google what they call a "JSON key". This is a json file containing all the necessary credentials for making calls to the embed API. All details can be found at: [https://ga-dev-tools.appspot.com/embed-api/server-side-authorization/](https://ga-dev-tools.appspot.com/embed-api/server-side-authorization/) 
 
-Once you have the "JSON key" you need to place it in the root of your DocPad application. The plugin will load it from there. By default the plugin expects it to be named "credentials.json". 
+Once you have the "JSON key" you need to place it in the root of your DocPad application. The plugin will load it from there. By default the plugin expects it to be named "credentials.json".
 
-In docpad.coffee file you will need to configure the queries you want to send to google and the URL endpoints for calling those queries from within your application.
+In docpad.coffee file configure the google analytics id for your site.
 
 ````coffee
     plugins:
         analytics:
-            queries:[{
-                'endPoint': 'uniquePageviews',
-                'query':{
-                    'ids':['ga:12345678'],
-                    'metrics': 'ga:uniquePageviews',
-                    'dimensions': 'ga:pageTitle',
-                    'start-date': '30daysAgo',
-                    'end-date': 'yesterday',
-                    'sort': '-ga:uniquePageviews',
-                    'max-results': 10
-                }
-            }]
+            qryId: 'ga:123456789'
 ````
-
-The `endPoint` parameter is appended to the base dataURL, by default, `/analytics/data`. So to retrieve the above query your application needs to make a call to `/analytics/data/uniquePageviews`.
+Each analytics query is identified by an `endPoint`. The `endPoint` parameter is appended to the base dataURL, by default, `/analytics/data`. So to retrieve the `uniquePageviews` query your application needs to make a call to `/analytics/data/uniquePageviews`.
 
 ```js
     $.getJSON('/analytics/data/uniquePageviews',function(data){
         $('#results pre').html(JSON.stringify(data,null,4));
     });
 ```
+The endpoints for the default, built in queries are:
+* "30daysPageviews"
+* "uniquePageviews"
+* "7daysPageviews"
+* "yesterdayPageviews"
+* "60daySessions"
+* "30dayCountry"
+* "7daysCountry"
+* "yesterdayCountry"
+* "browserAndOS"
+* "timeOnSite"
+* "trafficSources"
+* "keywords"
 
 To build and test queries use google's [query explorer](https://ga-dev-tools.appspot.com/query-explorer/)

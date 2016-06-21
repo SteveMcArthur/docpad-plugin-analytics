@@ -102,18 +102,7 @@ docpadConfig =
 
     plugins:
         analytics:
-            queries:[{
-                'endPoint': 'uniquePageviews',
-                'query':{
-                    'ids':'ga:97561085',#replace this with your own ID
-                    'metrics': 'ga:uniquePageviews',
-                    'dimensions': 'ga:pageTitle',
-                    'start-date': '7daysAgo',
-                    'end-date': 'yesterday',
-                    'sort': '-ga:uniquePageviews',
-                    'max-results': 10
-                }
-            }]
+            qryId: 'ga:97561085'
 
     # =================================
     # Environments
