@@ -3,6 +3,7 @@ module.exports = (BasePlugin) ->
     # Define Plugin
     google = require('googleapis')
     path = require('path')
+    fs = require('fs')
     class AnalyticsPlugin extends BasePlugin
         # Plugin name
         name: 'analytics'
@@ -28,13 +29,12 @@ module.exports = (BasePlugin) ->
             
             cacheExpires: 1000*60*60
             
-            
-            
-            #example of a google analytics api query. You will probably want
-            #to use googles query explorer (https://ga-dev-tools.appspot.com/query-explorer/)
-            #to build your own query.
+            #use google's query explorer (https://ga-dev-tools.appspot.com/query-explorer/)
+            #to build your own queries.
             queries: []
         
+        #common queries - these will be merged with any queries
+        #provided as part of the config
         defaultQueries: require('./defaultQueries')
         
         getEndpoints: () ->
@@ -95,9 +95,7 @@ module.exports = (BasePlugin) ->
                         query.cachedData = rawData
                         data = plugin.formatData(rawData)
                         callback(null,data)
-        
-        constructor: ->
-            super
+                        
             
         setConfig: ->
             super
@@ -109,6 +107,8 @@ module.exports = (BasePlugin) ->
             for q in plugin.defaultQueries
                 if endpoints.indexOf(q.endPoint) == -1
                     queries.push(q)
+            
+            plugin.init()
             
             
          
@@ -125,7 +125,6 @@ module.exports = (BasePlugin) ->
             plugin = @
             config = plugin.getConfig()
             
-            plugin.init()
             queries = config.queries
             
             server.get config.dataURL, (req,res,next) ->

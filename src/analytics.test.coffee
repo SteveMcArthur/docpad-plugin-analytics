@@ -9,4 +9,4 @@ docpadConfig =
             credentials: {}
 
 require('docpad').require('testers')
-    .test(testerConfig,docpadConfig)
+    .test(testerConfig)

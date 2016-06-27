@@ -10,6 +10,9 @@ module.exports = (testers) ->
     class AnalyticsTester extends testers.ServerTester
         # Test Generate
         #testGenerate: testers.RendererTester::testGenerate
+        
+        testCreate: ->
+            super
 
         # Custom test for the server
         testServer: (next) ->
@@ -50,9 +53,9 @@ module.exports = (testers) ->
                     expectedConfig.forEach (item) ->
                         test item+' property', () ->
                             expect(config).to.have.property(item)
-                    
                     done()
-                                            
+                    
+
                 @suite 'plugin methods are functions', (suite,test,done) ->
                     expectedMethods = [
                         "formatData"
@@ -65,9 +68,8 @@ module.exports = (testers) ->
                         test item+' method', () ->
                             console.log(item)
                             expect(plugin[item]).to.be.instanceof(Function)
-                    
                     done()
-                    
+
                 @suite 'default queries exist', (suite,test,done) ->
                     
                     endpoints = []
@@ -79,9 +81,8 @@ module.exports = (testers) ->
                         test item+' endpoint', () ->
                             i = endpoints.indexOf(item)
                             expect(i).to.be.above(-1)
-                    
                     done()
-                    
+
                 @suite 'default queries copied to queries', (suite,test,done) ->
                     
                     endpoints = []
@@ -93,5 +94,5 @@ module.exports = (testers) ->
                         test item+' endpoint', () ->
                             i = endpoints.indexOf(item)
                             expect(i).to.be.above(-1)
-                    
                     done()
+                    
