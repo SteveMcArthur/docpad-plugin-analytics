@@ -62,16 +62,82 @@ Each analytics query is identified by an `endPoint`. The `endPoint` parameter is
 ```
 The endpoints for the default, built in queries are:
 * "30daysPageviews"
-* "uniquePageviews"
+````coffee
+    'metrics': 'ga:uniquePageviews'
+    'dimensions': 'ga:pageTitle'
+    'start-date': '30daysAgo'
+    'end-date': 'yesterday'
+````
+* "uniquePageviews"   
+        alias for "30daysPageviews"
 * "7daysPageviews"
+````coffee
+    'metrics': 'ga:uniquePageviews'
+    'dimensions': 'ga:pageTitle'
+    'start-date': '7daysAgo'
+    'end-date': 'yesterday'
+````
 * "yesterdayPageviews"
+````coffee
+    'metrics': 'ga:uniquePageviews'
+    'dimensions': 'ga:pageTitle'
+    'start-date': 'yesterday'
+    'end-date': 'yesterday'
+````
 * "60daySessions"
+````coffee
+    'metrics': 'ga:sessions'
+    'dimensions': 'ga:date'
+    'start-date': '60daysAgo'
+    'end-date': 'yesterday'
+````
 * "30dayCountry"
+````coffee
+    'metrics': 'ga:sessions'
+    'dimensions': 'ga:country,ga:countryIsoCode'
+    'start-date': '30daysAgo'
+    'end-date': 'yesterday'
+````
 * "7daysCountry"
+````coffee
+    'metrics': 'ga:sessions'
+    'dimensions': 'ga:country,ga:countryIsoCode'
+    'start-date': '7daysAgo'
+    'end-date': 'yesterday'
+````
 * "yesterdayCountry"
+````coffee
+    'metrics': 'ga:sessions'
+    'dimensions': 'ga:country,ga:countryIsoCode'
+    'start-date': 'yesterday'
+    'end-date': 'yesterday'
+````
 * "browserAndOS"
+````coffee
+    'metrics': 'ga:sessions'
+    'dimensions': 'ga:browser,ga:browserVersion,ga:operatingSystem,ga:operatingSystemVersion'
+    'start-date': '30daysAgo'
+    'end-date': 'yesterday'
+````
 * "timeOnSite"
+````coffee
+    'metrics': 'ga:sessions,ga:sessionDuration'
+    'start-date': '30daysAgo'
+    'end-date': 'yesterday'
+````
 * "trafficSources"
+````coffee
+    'metrics': 'ga:sessions,ga:pageviews,ga:sessionDuration,ga:exits'
+    'dimensions': 'ga:source,ga:medium'
+    'start-date': '30daysAgo'
+    'end-date': 'yesterday'
+````
 * "keywords"
+````coffee
+    'metrics': 'ga:sessions'
+    'dimensions': 'ga:keyword'
+    'start-date': '30daysAgo'
+    'end-date': 'yesterday'
+````
 
 To build and test queries use google's [query explorer](https://ga-dev-tools.appspot.com/query-explorer/)
