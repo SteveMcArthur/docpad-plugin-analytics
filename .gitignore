@@ -41,3 +41,4 @@ _ReSharper*/
 [Tt]est[Rr]esult*
 *.bat
 credentials.json
+shelf/
